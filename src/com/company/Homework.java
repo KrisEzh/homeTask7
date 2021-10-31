@@ -1,8 +1,9 @@
 package com.company;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 
-public abstract class Homework {
+public class Homework {
 
     static int[] arr = generateRandomArray();
 
@@ -21,14 +22,14 @@ public abstract class Homework {
         isLeapYear(year);
 
         //homeTask2
-        int clientOs = 1; //0-IOs, 1-Android
+        int clientOs = 0; //0-IOs, 1-Android
         int phoneYear = 2021;
-        checkPhoneYear(phoneYear);
-        checkClientOs(clientOs);
+        checkVersion(clientOs, phoneYear);
+
 
         //homeTask3
-      int deliveryDistance = 95;
-      countDays(deliveryDistance);
+       int deliveryDistance = 95;
+       countDays(deliveryDistance);
 
         //homeTask4
         String abc = "aabccddefgghiijjkk";
@@ -41,7 +42,8 @@ public abstract class Homework {
 
         //homeTask6
         int [] array = generateRandomArray();
-        mothMiddleSpending();
+        float averageSum = mothMiddleSpendingFrom(array);
+        System.out.println(averageSum + " - средняя сумма трат за месяц");
 
     }
 
@@ -53,17 +55,20 @@ public abstract class Homework {
             System.out.println("Год не является високосным");
     }
 
-    public static void checkPhoneYear(int phoneYear) {
-        if (phoneYear < 2019) {
-            System.out.print("Установите облегченную версию ");}
-        else { System.out.print("Установите обычную версию ");
-        } }
+    public static boolean checkPhoneYear(int phoneYear) {
+        int currentYear = LocalDate.now().getYear();
+        return phoneYear < currentYear; }
 
-    public static void checkClientOs(int clientOs) {
+    public static void checkVersion(int clientOs, int phoneYear) {
+        boolean deviceIsOld = checkPhoneYear(phoneYear);
+        System.out.print("Установите ");
+        if(deviceIsOld == true) {
+            System.out.print(" LITE ");
+        }
         if (clientOs == 0) {
-                System.out.println("для iOS");
+                System.out.println(" версию для iOS");
             } else {
-                    System.out.println("для Android"); } }
+                    System.out.println(" версию для Android"); } }
 
 
     public static void countDays(int deliveryDistance) {
@@ -75,16 +80,17 @@ public abstract class Homework {
             System.out.println("Потребуется дней: 3"); } }
 
     public static void findDuplicates(String abc) {
-        char[] lettres = abc.toCharArray();
-        for (int i = 0; i < abc.length(); i++) {
-          for (int j = i + 1; j < abc.length(); j++)
-              if (lettres[i] == lettres[j]) {
-                  System.out.print(lettres[j]); return;
-                } else { System.out.print("Дубликаты не найдены"); return; } } }
-    { System.out.println(); }
+        char[] letters = abc.toCharArray();
+        char prevChar = Character.MAX_VALUE;
+        for (char letter:letters) {
+            if(letter == prevChar) {
+                System.out.println("Найден дубликат " + letter);
+                return; }
+                prevChar=letter; }
+                System.out.print("Дубликаты не найдены");   }
+
 
     public static int[] reverseArray(int[] numbers) {
-        System.out.println();
       int head = 0;
       int tail = numbers.length - 1;
       while (head<tail) {
@@ -94,18 +100,21 @@ public abstract class Homework {
       }
        return numbers; }
 
+    public static float mothMiddleSpendingFrom(int[] arr) {
+        int sum = calculateSum(arr);
+        return mothMiddleSpending(sum, arr.length); }
 
-    public static float allSum() {
-        float allSum = 0f;
-        for (float i : arr) {
-            allSum += i; }
-        return allSum;
+    public static int calculateSum(int[] arr) {
+        int sum = 0;
+        for (int i : Homework.arr) {
+            sum += i; }
+        return sum;
     }
-    public static float mothMiddleSpending() {
+    public static float mothMiddleSpending(int sum, int elementAmount) {
+        return sum /(float) elementAmount;
+    }
 
-        float mothMiddleSpending =  allSum() /  arr.length;
-     System.out.println("Средняя сумма трат за месяц составила " + mothMiddleSpending + " рублей");
-    return mothMiddleSpending; } }
+}
 
 
 
